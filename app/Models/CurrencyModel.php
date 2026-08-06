@@ -83,6 +83,22 @@ class CurrencyModel extends Model
     {
         $url = $this->apiUrl . '/latest?from=EUR';
 
+        // Fallback HTTP client if the cURL extension is missing on the server.
+        if (!function_exists('curl_init')) {
+            $response = @file_get_contents($url, false, stream_context_create([
+                'http' => ['timeout' => 10, 'header' => "Accept: application/json\r\nUser-Agent: Currefy/1.0 (https://currefy.com)\r\n"],
+                'ssl'  => ['verify_peer' => true, 'verify_peer_name' => true],
+            ]));
+            if ($response !== false) {
+                $data = json_decode($response, true);
+                if (is_array($data) && isset($data['rates']) && is_array($data['rates'])) {
+                    return $this->storeRates($data);
+                }
+            }
+            log_message('error', 'CurrencyModel: cURL missing and file_get_contents fallback failed.');
+            return $this->fallbackRates();
+        }
+
         // Use cURL for the HTTP request
         $ch = curl_init();
         curl_setopt_array($ch, [
@@ -107,26 +123,7 @@ class CurrencyModel extends Model
         // Validate response
         if ($error || $httpCode !== 200 || empty($response)) {
             log_message('error', "CurrencyModel: Failed to fetch rates. HTTP:{$httpCode} Error:{$error}");
-            // Return stale cache if available
-            if (file_exists($this->cacheFile)) {
-                $stale = json_decode(file_get_contents($this->cacheFile), true);
-                if (is_array($stale) && isset($stale['rates'])) {
-                    return $stale;
-                }
-            }
-            // Static fallback if API is blocked and no cache exists
-            return [
-                'rates' => [
-                    'EUR' => 1.0, 'USD' => 1.08, 'GBP' => 0.85, 'INR' => 90.50,
-                    'JPY' => 160.20, 'AUD' => 1.65, 'CAD' => 1.45, 'CHF' => 0.95,
-                    'CNY' => 7.80, 'SGD' => 1.45, 'NZD' => 1.78, 'ZAR' => 20.50,
-                    'BRL' => 5.40, 'MXN' => 18.20, 'HKD' => 8.45, 'SEK' => 11.20
-                ],
-                'base' => 'EUR',
-                'date' => date('Y-m-d'),
-                'cached_at' => time(),
-                'error' => true
-            ];
+            return $this->fallbackRates();
         }
 
         $data = json_decode($response, true);
@@ -134,9 +131,17 @@ class CurrencyModel extends Model
         // Validate JSON structure
         if (!is_array($data) || !isset($data['rates']) || !is_array($data['rates'])) {
             log_message('error', 'CurrencyModel: Invalid API response structure.');
-            return ['rates' => [], 'base' => 'EUR', 'date' => date('Y-m-d'), 'cached_at' => time(), 'error' => true];
+            return $this->fallbackRates(true);
         }
 
+        return $this->storeRates($data);
+    }
+
+    /**
+     * Validate, normalize and persist fresh rates, then return them.
+     */
+    private function storeRates(array $data): array
+    {
         // Add EUR itself (base currency) to rates for completeness
         $data['rates']['EUR'] = 1.0;
 
@@ -147,9 +152,45 @@ class CurrencyModel extends Model
         ksort($data['rates']);
 
         // Cache to file (writable/cache/rates.json)
-        file_put_contents($this->cacheFile, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
+        if (!is_writable(dirname($this->cacheFile))) {
+            log_message('warning', 'CurrencyModel: cache directory not writable, skipping cache write.');
+        } else {
+            @file_put_contents($this->cacheFile, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
+        }
 
         return $data;
+    }
+
+    /**
+     * Stale cache if available, otherwise a static approximation.
+     */
+    private function fallbackRates(bool $empty = false): array
+    {
+        // Return stale cache if available
+        if (file_exists($this->cacheFile)) {
+            $stale = json_decode(@file_get_contents($this->cacheFile), true);
+            if (is_array($stale) && isset($stale['rates'])) {
+                return $stale;
+            }
+        }
+
+        if ($empty) {
+            return ['rates' => [], 'base' => 'EUR', 'date' => date('Y-m-d'), 'cached_at' => time(), 'error' => true];
+        }
+
+        // Static fallback if API is blocked and no cache exists
+        return [
+            'rates' => [
+                'EUR' => 1.0, 'USD' => 1.08, 'GBP' => 0.85, 'INR' => 90.50,
+                'JPY' => 160.20, 'AUD' => 1.65, 'CAD' => 1.45, 'CHF' => 0.95,
+                'CNY' => 7.80, 'SGD' => 1.45, 'NZD' => 1.78, 'ZAR' => 20.50,
+                'BRL' => 5.40, 'MXN' => 18.20, 'HKD' => 8.45, 'SEK' => 11.20
+            ],
+            'base' => 'EUR',
+            'date' => date('Y-m-d'),
+            'cached_at' => time(),
+            'error' => true
+        ];
     }
 
     /**

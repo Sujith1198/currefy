@@ -29,20 +29,26 @@ class RateLimit implements FilterInterface
         $ip  = $request->getIPAddress();
         $key = 'ratelimit_' . md5($ip);
 
-        $cache = cache();
-        $count = (int) ($cache->get($key) ?? 0);
+        try {
+            $cache = cache();
+            $count = (int) ($cache->get($key) ?? 0);
 
-        if ($count >= $this->maxRequests) {
-            return service('response')
-                ->setStatusCode(429)
-                ->setHeader('Retry-After', (string) $this->window)
-                ->setJSON([
-                    'success' => false,
-                    'error'   => 'Too many requests. Please try again shortly.',
-                ]);
+            if ($count >= $this->maxRequests) {
+                return service('response')
+                    ->setStatusCode(429)
+                    ->setHeader('Retry-After', (string) $this->window)
+                    ->setJSON([
+                        'success' => false,
+                        'error'   => 'Too many requests. Please try again shortly.',
+                    ]);
+            }
+
+            $cache->save($key, $count + 1, $this->window);
+        } catch (\Throwable $e) {
+            // Cache unavailable (e.g. unwritable writable/cache on shared hosting):
+            // fail open rather than returning 500 for every request.
+            log_message('warning', 'RateLimit cache error: ' . $e->getMessage());
         }
-
-        $cache->save($key, $count + 1, $this->window);
 
         return null;
     }

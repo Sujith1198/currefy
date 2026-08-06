@@ -63,4 +63,4 @@
         </div>
     </div>
 </section>
-<?php include 'partials/unit_converter_script.php'; ?>
+<?= $this->include('partials/unit_converter_script') ?>

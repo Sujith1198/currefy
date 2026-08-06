@@ -61,9 +61,10 @@ class Currency extends Controller
             ])->setStatusCode(400);
         }
 
-        $amount = (float) $this->request->getPost('amount');
-        $from   = strtoupper($this->request->getPost('from'));
-        $to     = strtoupper($this->request->getPost('to'));
+        $validData = $this->validator->getValidated();
+        $amount = (float) $validData['amount'];
+        $from   = strtoupper($validData['from']);
+        $to     = strtoupper($validData['to']);
 
         $ratesData = $this->currencyModel->getRates();
         $result    = $this->currencyModel->convert($amount, $from, $to, $ratesData);

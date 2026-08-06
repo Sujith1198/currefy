@@ -36,10 +36,11 @@ class Api extends Controller
             return $this->response->setJSON(['success' => false, 'error' => 'Invalid input.'])->setStatusCode(400);
         }
 
+        $validData = $this->validator->getValidated();
         $model    = new CurrencyModel();
-        $amount   = (float) $this->request->getPost('amount');
-        $from     = strtoupper($this->request->getPost('from'));
-        $to       = strtoupper($this->request->getPost('to'));
+        $amount   = (float) $validData['amount'];
+        $from     = strtoupper($validData['from']);
+        $to       = strtoupper($validData['to']);
         $rateData = $model->getRates();
         $result   = $model->convert($amount, $from, $to, $rateData);
 
@@ -47,10 +48,14 @@ class Api extends Controller
             return $this->response->setJSON(['success' => false, 'error' => 'Currency not found.'])->setStatusCode(400);
         }
 
+        $fromRate = $rateData['rates'][$from] ?? 1.0;
+        $toRate   = $rateData['rates'][$to] ?? 1.0;
+        $calcRate = $fromRate != 0 ? round($toRate / $fromRate, 6) : 0;
+
         return $this->response->setJSON([
             'success' => true,
             'result'  => $result,
-            'rate'    => round($rateData['rates'][$to] / $rateData['rates'][$from], 6),
+            'rate'    => $calcRate,
             'date'    => $rateData['date'] ?? date('Y-m-d'),
         ]);
     }

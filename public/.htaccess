@@ -23,8 +23,8 @@ ServerSignature Off
     Options +FollowSymlinks
     RewriteEngine On
 
-    # Set base for subfolder install (XAMPP: /converter/currefy/public/)
-    RewriteBase /converter/currefy/public/
+    # Set base for production root
+    RewriteBase /
 
     # Redirect trailing slashes
     RewriteCond %{REQUEST_FILENAME} !-d

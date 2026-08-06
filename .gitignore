@@ -1,0 +1,28 @@
+# ---- Environment / Secrets ----
+.env
+.env.*
+
+# ---- Dependencies ----
+/vendor
+/builds
+
+# ---- CodeIgniter writable artifacts ----
+/writable/cache/*
+/writable/debugbar/*
+/writable/logs/*
+/writable/session/*
+/writable/uploads/*
+!/writable/cache/.htaccess
+!/writable/debugbar/.htaccess
+!/writable/logs/.htaccess
+!/writable/session/.htaccess
+!/writable/uploads/.htaccess
+!/writable/index.html
+!/writable/.htaccess
+
+# ---- OS / Editor ----
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,34 @@
+# Currefy Environment Configuration
+# Copy this file to .env and edit values
+
+CI_ENVIRONMENT = development
+
+# App Settings
+app.baseURL = 'http://localhost/converter/currefy/public/'
+app.forceGlobalSecureRequests = false
+
+# Currency API (Frankfurter is free - no key needed)
+currency.apiUrl = 'https://api.frankfurter.app'
+currency.cacheHours = 24
+
+# Session
+session.driver = 'CodeIgniter\Session\Handlers\FileHandler'
+session.cookieName = '__Host-currefy_session'
+session.expiration = 7200
+session.savePath = null
+session.matchIP = false
+session.timeToUpdate = 300
+session.regenerateDestroy = false
+
+# Security
+security.csrfProtection = 'cookie'
+security.tokenRandomize = true
+security.tokenName = 'csrf_token'
+security.headerName = 'X-CSRF-TOKEN'
+security.cookieName = 'csrf_cookie'
+security.expires = 7200
+security.regenerate = true
+security.redirect = false
+
+# Database (not used, but required by CI4)
+# database.default.hostname = localhost

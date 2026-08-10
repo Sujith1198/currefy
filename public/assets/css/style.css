@@ -222,7 +222,7 @@ ul { list-style: none; }
   flex-shrink: 0;
   text-decoration: none;
 }
-.logo-img { width: 1.6rem; height: 1.6rem; object-fit: contain; }
+.nav-logo .logo-img { width: 1.6rem; height: 1.6rem; object-fit: contain; flex: 0 0 1.6rem; }
 .logo-text { background: var(--grad-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
 .nav-menu {

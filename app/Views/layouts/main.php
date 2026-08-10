@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <title><?= esc($title ?? 'Currefy - Currency & Unit Converter') ?></title>
 
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="icon" type="image/png" href="<?= base_url('assets/images/logo.png') ?>">
 
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
 <nav class="navbar" id="main-nav">
     <div class="nav-container">
         <a href="<?= base_url() ?>" class="nav-logo" id="nav-logo">
-            <img src="assets/images/logo.png" alt="Currefy" class="logo-img">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Currefy" class="logo-img">
             <span class="logo-text">Currefy</span>
         </a>
 
@@ -81,7 +81,7 @@
 <footer class="footer" id="main-footer">
     <div class="footer-container">
         <div class="footer-brand">
-            <img src="assets/images/logo.png" alt="Currefy" class="logo-img">
+            <img src="<?= base_url('assets/images/logo.png') ?>" alt="Currefy" class="logo-img">
             <strong>Currefy</strong>
         </div>
         <div class="footer-links">

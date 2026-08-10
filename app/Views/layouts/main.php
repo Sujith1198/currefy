@@ -66,6 +66,7 @@
                     <li><a href="<?= base_url('length') ?>" class="nav-link <?= (uri_string() === 'length') ? 'active' : '' ?>" id="nav-length" role="menuitem">📏 Length</a></li>
                     <li><a href="<?= base_url('area') ?>" class="nav-link" id="nav-area" role="menuitem">📐 Area</a></li>
                     <li><a href="<?= base_url('speed') ?>" class="nav-link" id="nav-speed" role="menuitem">🚀 Speed</a></li>
+                    <li><a href="<?= base_url('index.php/admin/login') ?>" class="nav-link" id="nav-admin" role="menuitem">🔐 Admin Login</a></li>
                 </ul>
             </li>
         </ul>
@@ -93,6 +94,7 @@
             <a href="<?= base_url('speed') ?>">Speed</a>
             <a href="<?= base_url('data-storage') ?>">Data</a>
             <a href="<?= base_url('timezone') ?>">Timezone</a>
+            <a href="<?= base_url('index.php/admin/login') ?>">Admin</a>
         </div>
         <div class="footer-info">
             <?php if (!empty($lastUpdated)): ?>
@@ -105,5 +107,6 @@
 
 <!-- JavaScript -->
 <script src="<?= base_url('assets/js/app.js') ?>"></script>
+<script src="<?= base_url('assets/js/analytics.js') ?>"></script>
 </body>
 </html>

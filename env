@@ -30,5 +30,14 @@ security.expires = 7200
 security.regenerate = true
 security.redirect = false
 
-# Database (not used, but required by CI4)
+# Database for admin analytics
 # database.default.hostname = localhost
+# database.default.database = currefy
+# database.default.username = root
+# database.default.password =
+# database.default.DBDriver = MySQLi
+
+# Admin analytics login
+# Generate a hash with: php -r "echo password_hash('change-this-password', PASSWORD_DEFAULT), PHP_EOL;"
+# admin.email = admin@example.com
+# admin.passwordHash = '$2y$10$replace-with-a-generated-password-hash'

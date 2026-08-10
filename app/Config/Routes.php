@@ -43,6 +43,13 @@ $routes->post('data-storage/convert', 'DataStorage::convert');
 $routes->get('timezone', 'Timezone::index');
 $routes->post('timezone/convert', 'Timezone::convert');
 
+// Admin analytics and public visitor tracking
+$routes->get('admin/login', 'Admin::login');
+$routes->post('admin/login', 'Admin::authenticate');
+$routes->get('admin/logout', 'Admin::logout');
+$routes->get('admin/analytics', 'Analytics::index', ['filter' => 'adminauth']);
+$routes->post('analytics/track', 'Analytics::track');
+
 // API (AJAX endpoints)
 $routes->get('api/rates', 'Api::rates');
 $routes->post('api/currency', 'Api::currency');

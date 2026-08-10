@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\RateLimit;
+use App\Filters\AdminAuth;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +37,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'ratelimit'     => RateLimit::class,
+        'adminauth'     => AdminAuth::class,
     ];
 
     /**
@@ -75,7 +77,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            'csrf' => ['except' => ['api/*']],
+            'csrf' => ['except' => ['api/*', 'analytics/track']],
             // 'invalidchars',
         ],
         'after' => [

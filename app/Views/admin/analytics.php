@@ -25,6 +25,6 @@
     </main>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-    <script>new DataTable('#visitors-table', {pageLength: 25, order: [[4, 'desc']]}); new DataTable('#pages-table', {pageLength: 25, order: [[1, 'desc']]});</script>
+    <script src="<?= base_url('assets/js/admin-analytics.js') ?>"></script>
 </body>
 </html>

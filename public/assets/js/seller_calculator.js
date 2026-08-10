@@ -85,10 +85,7 @@
         }).format(value) + ' ' + fields.currency.value;
     }
 
-    function applyPlatformDefaults() {
-        const platformKey = Object.keys(platformNames).find(function(key) {
-            return platformNames[key].toLowerCase() === fields.platform.value.trim().toLowerCase();
-        }) || 'custom';
+    function applyPlatformDefaults(platformKey) {
         const preset = platforms[platformKey];
         fields.platformFee.value = preset.platform;
         fields.paymentFee.value = preset.payment;
@@ -163,7 +160,8 @@
         field.addEventListener('change', calculate);
     });
 
-    fields.platform.addEventListener('input', applyPlatformDefaults);
-    fields.platform.addEventListener('change', applyPlatformDefaults);
+    fields.platform.addEventListener('change', function() {
+        applyPlatformDefaults(fields.platform.value);
+    });
     calculate();
 })();

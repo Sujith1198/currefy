@@ -22,37 +22,37 @@
                 <div class="seller-form-grid">
                     <div class="input-group seller-platform-field">
                         <label class="input-label" for="seller-platform">Selling platform</label>
-                        <input type="text" id="seller-platform" class="form-input" value="Custom / Direct website" list="seller-platform-options" autocomplete="off" placeholder="Search a platform">
-                        <datalist id="seller-platform-options">
-                            <option value="Custom / Direct website"></option>
-                            <option value="Amazon India"></option>
-                            <option value="Flipkart"></option>
-                            <option value="Meesho"></option>
-                            <option value="Myntra"></option>
-                            <option value="AJIO"></option>
-                            <option value="Nykaa"></option>
-                            <option value="Amazon Global"></option>
-                            <option value="eBay"></option>
-                            <option value="Etsy"></option>
-                            <option value="Walmart Marketplace"></option>
-                            <option value="Shopify"></option>
-                            <option value="WooCommerce"></option>
-                            <option value="Facebook / Instagram Shop"></option>
-                            <option value="TikTok Shop"></option>
-                            <option value="Daraz"></option>
-                            <option value="Shopee"></option>
-                            <option value="Lazada"></option>
-                            <option value="noon"></option>
-                        </datalist>
+                        <select id="seller-platform" class="form-select">
+                            <option value="custom">Custom / Direct website</option>
+                            <option value="amazon-in">Amazon India</option>
+                            <option value="flipkart">Flipkart</option>
+                            <option value="meesho">Meesho</option>
+                            <option value="myntra">Myntra</option>
+                            <option value="ajio">AJIO</option>
+                            <option value="nykaa">Nykaa</option>
+                            <option value="amazon-global">Amazon Global</option>
+                            <option value="ebay">eBay</option>
+                            <option value="etsy">Etsy</option>
+                            <option value="walmart">Walmart Marketplace</option>
+                            <option value="shopify">Shopify</option>
+                            <option value="woocommerce">WooCommerce</option>
+                            <option value="facebook">Facebook / Instagram Shop</option>
+                            <option value="tiktok">TikTok Shop</option>
+                            <option value="daraz">Daraz</option>
+                            <option value="shopee">Shopee</option>
+                            <option value="lazada">Lazada</option>
+                            <option value="noon">noon</option>
+                        </select>
                         <small class="seller-field-note" id="seller-platform-note">Enter your own platform charges.</small>
                     </div>
                     <div class="input-group seller-currency-field">
                         <label class="input-label" for="seller-currency">Currency</label>
                         <select id="seller-currency" class="form-select">
-                            <option value="INR">INR - Indian Rupee</option>
-                            <option value="USD">USD - US Dollar</option>
-                            <option value="EUR">EUR - Euro</option>
-                            <option value="GBP">GBP - British Pound</option>
+                            <?php foreach (($currencyNames ?? []) as $code => $name): ?>
+                            <option value="<?= esc($code) ?>" <?= ($code === 'USD') ? 'selected' : '' ?>>
+                                <?= esc($code) ?> - <?= esc($name) ?>
+                            </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="input-group">

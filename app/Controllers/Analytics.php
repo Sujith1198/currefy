@@ -29,6 +29,10 @@ class Analytics extends Controller
             (new AnalyticsModel())->record($payload);
         } catch (\Throwable $exception) {
             log_message('error', 'Analytics tracking failed: ' . $exception->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'error' => 'Analytics storage is unavailable.',
+            ])->setStatusCode(503);
         }
 
         return $this->response->setJSON(['success' => true]);

@@ -1,11 +1,8 @@
 -- Currefy admin analytics database setup
--- Run this entire file in phpMyAdmin or MySQL.
-
-CREATE DATABASE IF NOT EXISTS `currefy`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_general_ci;
-
-USE `currefy`;
+-- Select the existing server database before importing this file.
+-- Hostinger example: u376492188_currefy
+-- This script intentionally does not CREATE DATABASE because shared hosting
+-- users normally do not have CREATE DATABASE permission.
 
 CREATE TABLE IF NOT EXISTS `analytics_visitors` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

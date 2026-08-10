@@ -14,7 +14,7 @@
             <h1>Administrator login</h1>
             <p class="admin-muted">Sign in to view Currefy visitor analytics.</p>
             <?php if (!empty($error)): ?><div class="admin-alert"><?= esc($error) ?></div><?php endif; ?>
-            <form method="post" action="<?= base_url('index.php/admin/login') ?>" class="admin-form">
+            <form method="post" action="<?= admin_url('admin/login') ?>" class="admin-form">
                 <?= csrf_field() ?>
                 <label class="input-label" for="admin-email">Email</label>
                 <input class="form-input" id="admin-email" name="email" type="email" value="<?= esc(old('email')) ?>" required autocomplete="username">

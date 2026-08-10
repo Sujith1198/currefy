@@ -10,7 +10,7 @@
 <body class="admin-page">
     <header class="admin-topbar">
         <div><strong>Currefy Analytics</strong><span>Visitor activity overview</span></div>
-        <div class="admin-topbar-actions"><span><?= esc($adminEmail) ?></span><a class="btn btn-outline" href="<?= base_url('index.php/admin/logout') ?>">Log out</a></div>
+        <div class="admin-topbar-actions"><span><?= esc($adminEmail) ?></span><a class="btn btn-outline" href="<?= admin_url('admin/logout') ?>">Log out</a></div>
     </header>
     <main class="admin-dashboard container">
         <div class="admin-dashboard-heading"><div><p class="admin-eyebrow">ADMIN CONSOLE</p><h1>Visitor analytics</h1><p class="admin-muted">Page visits, country, IP address, and time spent.</p></div><a class="btn btn-outline" href="<?= base_url() ?>">View site</a></div>

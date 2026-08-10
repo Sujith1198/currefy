@@ -14,7 +14,7 @@ class AdminAuth implements FilterInterface
             return null;
         }
 
-        return redirect()->to(base_url('index.php/admin/login'))->with('error', 'Please sign in as administrator.');
+        return redirect()->to(admin_url('admin/login'))->with('error', 'Please sign in as administrator.');
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

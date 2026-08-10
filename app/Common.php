@@ -13,3 +13,11 @@
  *
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
+
+if (! function_exists('admin_url')) {
+	function admin_url(string $path = ''): string
+	{
+		$prefix = env('CI_ENVIRONMENT', 'production') === 'development' ? 'index.php/' : '';
+		return base_url($prefix . ltrim($path, '/'));
+	}
+}

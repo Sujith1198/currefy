@@ -27,12 +27,12 @@ class Admin extends Controller
 
         session()->regenerate(true);
         session()->set(['admin_authenticated' => true, 'admin_email' => $configuredEmail]);
-        return redirect()->to(base_url('index.php/admin/analytics'));
+        return redirect()->to(admin_url('admin/analytics'));
     }
 
     public function logout(): \CodeIgniter\HTTP\ResponseInterface
     {
         session()->destroy();
-        return redirect()->to(base_url('index.php/admin/login'));
+        return redirect()->to(admin_url('admin/login'));
     }
 }

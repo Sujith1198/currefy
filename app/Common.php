@@ -17,7 +17,12 @@
 if (! function_exists('admin_url')) {
 	function admin_url(string $path = ''): string
 	{
-		$prefix = env('CI_ENVIRONMENT', 'production') === 'development' ? 'index.php/' : '';
+		$host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+		$isLocal = str_starts_with($host, '127.0.0.1:')
+			|| str_starts_with($host, '[::1]:')
+			|| $host === 'localhost'
+			|| str_starts_with($host, 'localhost:');
+		$prefix = $isLocal ? 'index.php/' : '';
 		return base_url($prefix . ltrim($path, '/'));
 	}
 }

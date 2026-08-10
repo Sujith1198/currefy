@@ -16,8 +16,20 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/converter/currefy/public/';
-    // public string $baseURL = 'https://currefy.com/';
+    public string $baseURL = 'https://currefy.com/';
+
+    public function __construct()
+    {
+        $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+
+        if (str_starts_with($host, '127.0.0.1:') || str_starts_with($host, '[::1]:')) {
+            $this->baseURL = 'http://' . $host . '/';
+        } elseif ($host === 'localhost' || str_starts_with($host, 'localhost:')) {
+            $this->baseURL = 'http://' . $host . '/converter/currefy/public/';
+        } elseif ($host !== '') {
+            $this->baseURL = 'https://' . preg_replace('/:\d+$/', '', $host) . '/';
+        }
+    }
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

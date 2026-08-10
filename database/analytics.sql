@@ -1,5 +1,11 @@
 -- Currefy admin analytics database setup
--- Run this in phpMyAdmin or MySQL after selecting your Currefy database.
+-- Run this entire file in phpMyAdmin or MySQL.
+
+CREATE DATABASE IF NOT EXISTS `currefy`
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_general_ci;
+
+USE `currefy`;
 
 CREATE TABLE IF NOT EXISTS `analytics_visitors` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

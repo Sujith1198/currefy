@@ -12,6 +12,9 @@ $routes->get('currency', 'Currency::index');
 $routes->post('currency/convert', 'Currency::convert');
 $routes->get('currency/rates', 'Currency::rates');
 
+// Online seller calculator
+$routes->get('seller-calculator', 'SellerCalculator::index');
+
 // Weight Converter
 $routes->get('weight', 'Weight::index');
 $routes->post('weight/convert', 'Weight::convert');

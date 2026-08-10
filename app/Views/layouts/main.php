@@ -13,6 +13,8 @@
     <meta property="og:type" content="website">
     <title><?= esc($title ?? 'Currefy - Currency & Unit Converter') ?></title>
 
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +33,7 @@
 <nav class="navbar" id="main-nav">
     <div class="nav-container">
         <a href="<?= base_url() ?>" class="nav-logo" id="nav-logo">
-            <span class="logo-icon">⚡</span>
+            <img src="assets/images/logo.png" alt="Currefy" class="logo-img">
             <span class="logo-text">Currefy</span>
         </a>
 
@@ -43,24 +45,27 @@
             <li><a href="<?= base_url('currency') ?>" class="nav-link <?= (uri_string() === 'currency') ? 'active' : '' ?>" id="nav-currency">
                 <span class="nav-icon">💱</span> Currency
             </a></li>
+            <li><a href="<?= base_url('seller-calculator') ?>" class="nav-link <?= (uri_string() === 'seller-calculator') ? 'active' : '' ?>" id="nav-seller">
+                <span class="nav-icon">🧾</span> Seller
+            </a></li>
+            <li><a href="<?= base_url('timezone') ?>" class="nav-link <?= (uri_string() === 'timezone') ? 'active' : '' ?>" id="nav-timezone">
+                <span class="nav-icon">🌍</span> Time Zone
+            </a></li>
+            <li><a href="<?= base_url('data-storage') ?>" class="nav-link <?= (uri_string() === 'data-storage') ? 'active' : '' ?>" id="nav-data">
+                <span class="nav-icon">💾</span> Data Storage
+            </a></li>
             <li><a href="<?= base_url('weight') ?>" class="nav-link <?= (uri_string() === 'weight') ? 'active' : '' ?>" id="nav-weight">
                 <span class="nav-icon">⚖️</span> Weight
-            </a></li>
-            <li><a href="<?= base_url('temperature') ?>" class="nav-link <?= (uri_string() === 'temperature') ? 'active' : '' ?>" id="nav-temperature">
-                <span class="nav-icon">🌡️</span> Temperature
-            </a></li>
-            <li><a href="<?= base_url('length') ?>" class="nav-link <?= (uri_string() === 'length') ? 'active' : '' ?>" id="nav-length">
-                <span class="nav-icon">📏</span> Length
             </a></li>
             <li class="nav-dropdown">
                 <button class="nav-link nav-dropdown-toggle" id="nav-more" aria-haspopup="true" aria-expanded="false">
                     <span class="nav-icon">🔧</span> More ▾
                 </button>
                 <ul class="nav-dropdown-menu" role="menu">
+                    <li><a href="<?= base_url('temperature') ?>" class="nav-link <?= (uri_string() === 'temperature') ? 'active' : '' ?>" id="nav-temperature" role="menuitem">🌡️ Temperature</a></li>
+                    <li><a href="<?= base_url('length') ?>" class="nav-link <?= (uri_string() === 'length') ? 'active' : '' ?>" id="nav-length" role="menuitem">📏 Length</a></li>
                     <li><a href="<?= base_url('area') ?>" class="nav-link" id="nav-area" role="menuitem">📐 Area</a></li>
                     <li><a href="<?= base_url('speed') ?>" class="nav-link" id="nav-speed" role="menuitem">🚀 Speed</a></li>
-                    <li><a href="<?= base_url('data-storage') ?>" class="nav-link" id="nav-data" role="menuitem">💾 Data Storage</a></li>
-                    <li><a href="<?= base_url('timezone') ?>" class="nav-link" id="nav-timezone" role="menuitem">🌍 Time Zone</a></li>
                 </ul>
             </li>
         </ul>
@@ -76,7 +81,7 @@
 <footer class="footer" id="main-footer">
     <div class="footer-container">
         <div class="footer-brand">
-            <span class="logo-icon">⚡</span>
+            <img src="assets/images/logo.png" alt="Currefy" class="logo-img">
             <strong>Currefy</strong>
         </div>
         <div class="footer-links">

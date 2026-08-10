@@ -108,6 +108,14 @@
                 <span class="card-arrow">→</span>
             </a>
 
+            <a href="<?= base_url('seller-calculator') ?>" class="converter-card glass-card" id="card-seller-calculator">
+                <div class="card-icon-wrap currency-icon">🧾</div>
+                <h3>Seller Calculator</h3>
+                <p>Calculate marketplace fees, profit, margin, and break-even price.</p>
+                <div class="card-badge">For Sellers</div>
+                <span class="card-arrow">→</span>
+            </a>
+
             <a href="<?= base_url('weight') ?>" class="converter-card glass-card" id="card-weight">
                 <div class="card-icon-wrap weight-icon">⚖️</div>
                 <h3>Weight</h3>

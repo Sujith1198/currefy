@@ -7,10 +7,10 @@
 /builds
 
 # ---- CodeIgniter writable artifacts ----
-/writable/cache/*
-/writable/debugbar/*
-/writable/logs/*
-/writable/session/*
+!/writable/cache/*
+!/writable/debugbar/*
+!/writable/logs/*
+!/writable/session/*
 /writable/uploads/*
 !/writable/cache/.htaccess
 !/writable/debugbar/.htaccess

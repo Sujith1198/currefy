@@ -3,8 +3,7 @@
     if (document.body.classList.contains('admin-page')) return;
 
     const storageKey = 'currefy_visitor_key';
-    const baseUrl = document.querySelector('meta[name="base-url"]')?.content || '/';
-    const trackUrl = baseUrl.replace(/\/$/, '') + '/analytics/track';
+    const trackUrl = document.querySelector('meta[name="analytics-url"]')?.content || '/analytics/track';
     const visitorKey = localStorage.getItem(storageKey) || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random());
     localStorage.setItem(storageKey, visitorKey);
     const visitToken = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random();

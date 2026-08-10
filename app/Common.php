@@ -14,8 +14,8 @@
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
 
-if (! function_exists('admin_url')) {
-	function admin_url(string $path = ''): string
+if (! function_exists('route_url')) {
+	function route_url(string $path = ''): string
 	{
 		$host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
 		$isLocal = str_starts_with($host, '127.0.0.1:')
@@ -24,5 +24,12 @@ if (! function_exists('admin_url')) {
 			|| str_starts_with($host, 'localhost:');
 		$prefix = $isLocal ? 'index.php/' : '';
 		return base_url($prefix . ltrim($path, '/'));
+	}
+}
+
+if (! function_exists('admin_url')) {
+	function admin_url(string $path = ''): string
+	{
+		return route_url($path);
 	}
 }

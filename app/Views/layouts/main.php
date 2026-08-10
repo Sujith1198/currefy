@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <meta name="base-url" content="<?= base_url() ?>">
     <meta name="base-url" content="<?= base_url() ?>">
+    <meta name="analytics-url" content="<?= route_url('analytics/track') ?>">
     <meta name="description" content="<?= esc($description ?? 'Currefy - Free currency and unit converter with daily updated rates.') ?>">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="<?= esc($title ?? 'Currefy') ?>">

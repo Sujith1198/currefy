@@ -40,7 +40,33 @@ class Analytics extends Controller
 
     public function index(): string
     {
-        $data = (new AnalyticsModel())->dashboard();
+        $range = (string) $this->request->getGet('range');
+        $from = null;
+        $to = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+
+        if ($range === '24h') {
+            $from = $to->sub(new \DateInterval('PT24H'));
+        } elseif ($range === '7d') {
+            $from = $to->sub(new \DateInterval('P7D'));
+        } elseif ($range === '30d') {
+            $from = $to->sub(new \DateInterval('P30D'));
+        } elseif ($range === 'custom') {
+            $start = (string) $this->request->getGet('from');
+            $end = (string) $this->request->getGet('to');
+            $from = \DateTimeImmutable::createFromFormat('!Y-m-d', $start, new \DateTimeZone('UTC')) ?: null;
+            $to = (\DateTimeImmutable::createFromFormat('!Y-m-d', $end, new \DateTimeZone('UTC')) ?: $to)->setTime(23, 59, 59);
+            if (!$from || $from > $to) {
+                $range = 'all';
+                $from = null;
+                $to = null;
+            }
+        } else {
+            $range = 'all';
+            $to = null;
+        }
+
+        $data = (new AnalyticsModel())->dashboard($from, $to);
+        $data['filter'] = ['range' => $range, 'from' => $from?->format('Y-m-d'), 'to' => $to?->format('Y-m-d')];
         return view('admin/analytics', $data + ['title' => 'Visitor Analytics | Currefy', 'adminEmail' => session('admin_email')]);
     }
 }

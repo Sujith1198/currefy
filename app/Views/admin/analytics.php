@@ -14,6 +14,21 @@
     </header>
     <main class="admin-dashboard container">
         <div class="admin-dashboard-heading"><div><p class="admin-eyebrow">ADMIN CONSOLE</p><h1>Visitor analytics</h1><p class="admin-muted">Page visits, country, IP address, and time spent.</p></div><a class="btn btn-outline" href="<?= base_url() ?>">View site</a></div>
+        <form class="admin-filter-bar glass-card" method="get" action="<?= admin_url('admin/analytics') ?>">
+            <label for="analytics-range">Date range</label>
+            <select id="analytics-range" name="range" class="form-select">
+                <option value="24h" <?= ($filter['range'] === '24h') ? 'selected' : '' ?>>Last 24 hours</option>
+                <option value="7d" <?= ($filter['range'] === '7d') ? 'selected' : '' ?>>Last 7 days</option>
+                <option value="30d" <?= ($filter['range'] === '30d') ? 'selected' : '' ?>>Last 30 days</option>
+                <option value="custom" <?= ($filter['range'] === 'custom') ? 'selected' : '' ?>>Custom dates</option>
+                <option value="all" <?= ($filter['range'] === 'all') ? 'selected' : '' ?>>All time</option>
+            </select>
+            <label for="analytics-from">From</label>
+            <input id="analytics-from" name="from" class="form-input" type="date" value="<?= esc($filter['from'] ?? '') ?>">
+            <label for="analytics-to">To</label>
+            <input id="analytics-to" name="to" class="form-input" type="date" value="<?= esc($filter['to'] ?? '') ?>">
+            <button class="btn btn-primary" type="submit">Apply filter</button>
+        </form>
         <section class="admin-stats-grid">
             <div class="admin-stat glass-card"><span>Total visitors</span><strong><?= number_format($summary['visitors']) ?></strong></div>
             <div class="admin-stat glass-card"><span>Page visits</span><strong><?= number_format($summary['pageVisits']) ?></strong></div>

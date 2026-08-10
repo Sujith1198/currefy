@@ -13,7 +13,12 @@ class AnalyticsModel extends Model
     {
         $db = $this->db;
         $now = date('Y-m-d H:i:s');
-        $visitorKey = $payload['visitor_key'];
+        // Use stable server-observed details for GA-style visitor aggregation.
+        $visitorKey = hash('sha256', implode('|', [
+            $payload['ip_address'],
+            $payload['country_code'],
+            $payload['user_agent'],
+        ]));
         $visitor = $db->table('analytics_visitors')->where('visitor_key', $visitorKey)->get()->getRowArray();
 
         if ($visitor) {
@@ -60,20 +65,44 @@ class AnalyticsModel extends Model
         }
     }
 
-    public function dashboard(): array
+    public function dashboard(?\DateTimeImmutable $from = null, ?\DateTimeImmutable $to = null): array
     {
         $db = $this->db;
+        $visitorQuery = $db->table('analytics_page_visits pv')
+            ->select('v.ip_address, v.country_code, v.user_agent, MIN(pv.started_at) AS first_seen, MAX(pv.last_seen) AS last_seen, COUNT(DISTINCT pv.visit_token) AS page_count')
+            ->join('analytics_visitors v', 'v.visitor_key = pv.visitor_key', 'left')
+            ->groupBy(['v.ip_address', 'v.country_code', 'v.user_agent']);
+        $pageQuery = $db->table('analytics_page_visits');
+        $countryQuery = $db->table('analytics_page_visits pv')->select('v.country_code')->join('analytics_visitors v', 'v.visitor_key = pv.visitor_key', 'left')->distinct();
+        $summaryPageQuery = $db->table('analytics_page_visits');
+
+        $queries = [
+            [$visitorQuery, 'pv.last_seen'],
+            [$pageQuery, 'last_seen'],
+            [$countryQuery, 'pv.last_seen'],
+            [$summaryPageQuery, 'last_seen'],
+        ];
+        foreach ($queries as [$query, $dateColumn]) {
+            if ($from) {
+                $query->where($dateColumn . ' >=', $from->format('Y-m-d H:i:s'));
+            }
+            if ($to) {
+                $query->where($dateColumn . ' <=', $to->format('Y-m-d H:i:s'));
+            }
+        }
+
         return [
-            'visitors' => $db->table('analytics_visitors')->orderBy('last_seen', 'DESC')->limit(500)->get()->getResultArray(),
-            'pages' => $db->table('analytics_page_visits')
+            'visitors' => $visitorQuery
+                ->orderBy('last_seen', 'DESC')->limit(500)->get()->getResultArray(),
+            'pages' => $pageQuery
                 ->select('page_path, page_title, COUNT(*) AS visits, SUM(duration_seconds) AS total_seconds, AVG(duration_seconds) AS average_seconds, MAX(last_seen) AS last_seen')
                 ->groupBy(['page_path', 'page_title'])
                 ->orderBy('visits', 'DESC')->limit(500)->get()->getResultArray(),
             'summary' => [
-                'visitors' => (int) $db->table('analytics_visitors')->countAllResults(),
-                'pageVisits' => (int) $db->table('analytics_page_visits')->countAllResults(),
-                'countries' => (int) $db->table('analytics_visitors')->select('country_code')->distinct()->countAllResults(),
-                'seconds' => (int) ($db->table('analytics_page_visits')->selectSum('duration_seconds')->get()->getRow()->duration_seconds ?? 0),
+                'visitors' => count($visitorQuery->get()->getResultArray()),
+                'pageVisits' => (int) $summaryPageQuery->countAllResults(),
+                'countries' => count($countryQuery->get()->getResultArray()),
+                'seconds' => (int) ($summaryPageQuery->selectSum('duration_seconds')->get()->getRow()->duration_seconds ?? 0),
             ],
         ];
     }
